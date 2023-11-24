@@ -6,6 +6,11 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "shoppingList/listArchived": {
+        "realization": "api/controllers/ShoppingListController.shoppingListsListArchived",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "shoppingList/get": {
         "realization": "api/controllers/ShoppingListController.shoppingListGet",
         "httpMethod": "GET",

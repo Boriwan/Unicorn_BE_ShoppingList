@@ -10,6 +10,13 @@ class ShoppingListController {
       ucEnv.getAuthorizationResult()
     );
   }
+  shoppingListsListArchived(ucEnv) {
+    return shoppingListAbl.shoppingListsListArchived(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getAuthorizationResult()
+    );
+  }
   shoppingListGet(ucEnv) {
     return shoppingListAbl.shoppingListGet(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
   }

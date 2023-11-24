@@ -16,6 +16,11 @@ class ShoppingListMongo extends UuObjectDao {
     return await super.find(filter);
   }
 
+  async listArchived(awid, state) {
+    let filter = { awid, state };
+    return await super.find(filter);
+  }
+
   async get(awid, id) {
     return await super.findOne({ id, awid });
   }

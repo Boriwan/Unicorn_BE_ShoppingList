@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 const shoppingListsListDtoInType = shape({});
+const shoppingListsListArchivedDtoInType = shape({});
 
 const shoppingListGetDtoInType = shape({
   id: id().isRequired(),

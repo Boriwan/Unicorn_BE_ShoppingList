@@ -39,6 +39,31 @@ class ShoppingListAbl {
       uuAppErrorMap,
     };
   }
+
+  async shoppingListsListArchived(awid, dtoIn, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListsListArchivedDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    let profiles = authorizationResult.getAuthorizedProfiles();
+
+    let state = ShoppingListStates.ARCHIVED;
+
+    let shoppingLists = await this.dao.listArchived(awid, state);
+
+    return {
+      profiles,
+      ...shoppingLists,
+      uuAppErrorMap,
+    };
+  }
+
   async shoppingListGet(awid, dtoIn, authorizationResult) {
     // HDS 1
     let validationResult = this.validator.validate("shoppingListGetDtoInType", dtoIn);
