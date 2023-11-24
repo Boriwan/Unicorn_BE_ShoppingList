@@ -19,6 +19,10 @@ class ShoppingListMongo extends UuObjectDao {
   async get(awid, id) {
     return await super.findOne({ id, awid });
   }
+
+  async delete(awid, id) {
+    return await super.deleteOne({ id, awid });
+  }
 }
 
 module.exports = ShoppingListMongo;

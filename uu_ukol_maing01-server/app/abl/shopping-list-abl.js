@@ -55,7 +55,7 @@ class ShoppingListAbl {
     let shoppingList = await this.dao.get(awid, dtoIn.id);
 
     if (!shoppingList) {
-      throw new Errors.Get.ShoppingListDoesNotExist(uuAppErrorMap, { shoppingList: dtoIn.id });
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist(uuAppErrorMap, { shoppingList: dtoIn.id });
     }
 
     return {
@@ -94,6 +94,66 @@ class ShoppingListAbl {
       uuAppErrorMap,
     };
   }
+  async shoppingListDelete(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListDeleteDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    const shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      // 3.1
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    // hds 4
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      // 4.1
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    // hds 7
+    await this.dao.delete(awid, dtoIn.id);
+
+    // hds 8
+    return { uuAppErrorMap };
+  }
+  // async shoppingListArchive(awid, dtoIn, identity) {
+  //   // HDS 1
+  //   let validationResult = this.validator.validate("shoppingListCreateDtoInType", dtoIn);
+  //   // A1, A2
+  //   let uuAppErrorMap = ValidationHelper.processValidationResult(
+  //     dtoIn,
+  //     validationResult,
+  //     WARNINGS.shoppingListUnsupportedKeys.code,
+  //     Errors.ShoppingList.InvalidDtoIn
+  //   );
+
+  //   dtoIn.awid = awid;
+  //   dtoIn.owner = identity.getUuIdentity();
+  //   dtoIn.state = ShoppingListStates.CONSTRUCT;
+  //   dtoIn.members = [];
+
+  //   let createdShoppingList = null;
+
+  //   try {
+  //     createdShoppingList = await this.dao.update(dtoIn);
+  //   } catch (e) {
+  //     // TODO: error report
+  //     throw e;
+  //   }
+  //   return {
+  //     ...createdShoppingList,
+  //     uuAppErrorMap,
+  //   };
+  // }
 }
 
 module.exports = new ShoppingListAbl();

@@ -11,17 +11,22 @@ class ShoppingListController {
     );
   }
   shoppingListGet(ucEnv) {
-    return shoppingListAbl.shoppingListGet(
-      ucEnv.getUri().getAwid(),
-      ucEnv.getDtoIn(),
-      ucEnv.getAuthorizationResult()
-    );
+    return shoppingListAbl.shoppingListGet(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
   }
   shoppingListCreate(ucEnv) {
     return shoppingListAbl.shoppingListCreate(
       ucEnv.getUri().getAwid(),
       ucEnv.getDtoIn(),
       ucEnv.getSession().getIdentity()
+    );
+  }
+
+  shoppingListDelete(ucEnv) {
+    return shoppingListAbl.shoppingListDelete(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getSession().getIdentity(),
+      ucEnv.getAuthorizationResult()
     );
   }
 }

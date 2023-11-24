@@ -14,8 +14,15 @@ const ShoppingList = {
   ShoppingListDoesNotExist: class extends ShoppingListUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Get.UC_CODE}shoppingListDoesNotExist`;
+      this.code = `${ShoppingList.UC_CODE}shoppingListDoesNotExist`;
       this.message = "ShoppingList does not exist.";
+    }
+  },
+  UserNotAuthorized: class extends ShoppingListUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ShoppingList.UC_CODE}userNotAuthorized`;
+      this.message = "User not authorized.";
     }
   },
 };
