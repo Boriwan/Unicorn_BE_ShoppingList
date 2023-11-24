@@ -20,7 +20,22 @@ class ShoppingListController {
       ucEnv.getSession().getIdentity()
     );
   }
-
+  shoppingListUpdate(ucEnv) {
+    return shoppingListAbl.shoppingListCreate(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getSession().getIdentity(),
+      ucEnv.getAuthorizationResult()
+    );
+  }
+  shoppingListToggleArchive(ucEnv) {
+    return shoppingListAbl.shoppingListToggleArchive(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getSession().getIdentity(),
+      ucEnv.getAuthorizationResult()
+    );
+  }
   shoppingListDelete(ucEnv) {
     return shoppingListAbl.shoppingListDelete(
       ucEnv.getUri().getAwid(),

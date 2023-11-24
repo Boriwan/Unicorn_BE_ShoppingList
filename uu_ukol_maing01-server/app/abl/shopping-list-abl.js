@@ -78,7 +78,7 @@ class ShoppingListAbl {
 
     dtoIn.awid = awid;
     dtoIn.owner = identity.getUuIdentity();
-    dtoIn.state = ShoppingListStates.CONSTRUCT;
+    dtoIn.state = ShoppingListStates.ACTIVE;
     dtoIn.members = [];
 
     let createdShoppingList = null;
@@ -94,6 +94,89 @@ class ShoppingListAbl {
       uuAppErrorMap,
     };
   }
+
+  async shoppingListUpdate(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListUpdateDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    const shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    const isEmptyText = "text" in dtoIn && dtoIn.text.trim().length === 0;
+
+    if (isEmptyText) {
+      throw new Errors.ShoppingList.TextCannotBeRemoved(uuAppErrorMap, { text: dtoIn.text });
+    }
+    const toUpdate = { ...dtoIn };
+
+    toUpdate.awid = awid;
+
+    let updatedShoppingList;
+    try {
+      updatedShoppingList = await this.dao.update(toUpdate);
+    } catch (e) {
+      if (e instanceof ObjectStoreError) {
+        throw new Errors.ShoppingList.ShoppingListDaoUpdateFailed({ uuAppErrorMap }, e);
+      }
+      throw e;
+    }
+
+    return {
+      ...updatedShoppingList,
+      uuAppErrorMap,
+    };
+  }
+
+  async shoppingListToggleArchive(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListToggleArchiveDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    const shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    if (shoppingList.state === ShoppingListStates.ACTIVE || shoppingList.state === ShoppingListStates.CONSTRUCT) {
+      shoppingList.state = ShoppingListStates.ARCHIVED;
+    } else if (shoppingList.state === ShoppingListStates.ARCHIVED) {
+      shoppingList.state = ShoppingListStates.ACTIVE;
+    }
+
+    await this.dao.update(shoppingList);
+    await this.dao.toggleArchive(awid, dtoIn.id);
+    const successMessage = "Successfully archived shopping list " + shoppingList.id;
+
+    return { successMessage, shoppingList, uuAppErrorMap };
+  }
+
   async shoppingListDelete(awid, dtoIn, session, authorizationResult) {
     // HDS 1
     let validationResult = this.validator.validate("shoppingListDeleteDtoInType", dtoIn);
@@ -107,53 +190,20 @@ class ShoppingListAbl {
 
     const shoppingList = await this.dao.get(awid, dtoIn.id);
     if (!shoppingList) {
-      // 3.1
       throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
     }
 
-    // hds 4
     const uuIdentity = session.getUuIdentity();
     const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
     if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
-      // 4.1
       throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
     }
 
-    // hds 7
     await this.dao.delete(awid, dtoIn.id);
+    const successMessage = "Successfully deleted shopping list " + shoppingList.id;
 
-    // hds 8
-    return { uuAppErrorMap };
+    return { successMessage, uuAppErrorMap };
   }
-  // async shoppingListArchive(awid, dtoIn, identity) {
-  //   // HDS 1
-  //   let validationResult = this.validator.validate("shoppingListCreateDtoInType", dtoIn);
-  //   // A1, A2
-  //   let uuAppErrorMap = ValidationHelper.processValidationResult(
-  //     dtoIn,
-  //     validationResult,
-  //     WARNINGS.shoppingListUnsupportedKeys.code,
-  //     Errors.ShoppingList.InvalidDtoIn
-  //   );
-
-  //   dtoIn.awid = awid;
-  //   dtoIn.owner = identity.getUuIdentity();
-  //   dtoIn.state = ShoppingListStates.CONSTRUCT;
-  //   dtoIn.members = [];
-
-  //   let createdShoppingList = null;
-
-  //   try {
-  //     createdShoppingList = await this.dao.update(dtoIn);
-  //   } catch (e) {
-  //     // TODO: error report
-  //     throw e;
-  //   }
-  //   return {
-  //     ...createdShoppingList,
-  //     uuAppErrorMap,
-  //   };
-  // }
 }
 
 module.exports = new ShoppingListAbl();

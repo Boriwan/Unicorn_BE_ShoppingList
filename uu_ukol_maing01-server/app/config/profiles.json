@@ -18,6 +18,14 @@
         "sysStateList": ["active"],
         "profileList": ["Authorities", "Executives"]
       },
+      "shoppingList/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "Executives"]
+      },
+      "shoppingList/toggleArchive": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "Executives"]
+      },
       "shoppingList/delete": {
         "sysStateList": ["active"],
         "profileList": ["Authorities", "Executives"]

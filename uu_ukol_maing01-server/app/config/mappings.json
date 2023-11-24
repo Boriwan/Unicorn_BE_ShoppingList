@@ -16,6 +16,16 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "shoppingList/update": {
+        "realization": "api/controllers/ShoppingListController.shoppingListUpdate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "shoppingList/toggleArchive": {
+        "realization": "api/controllers/ShoppingListController.shoppingListToggleArchive",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "shoppingList/delete": {
         "realization": "api/controllers/ShoppingListController.shoppingListDelete",
         "httpMethod": "POST",
