@@ -23,3 +23,8 @@ const shoppingListToggleArchiveDtoInType = shape({
 const shoppingListDeleteDtoInType = shape({
   id: id().isRequired(),
 });
+
+const shoppingListAddItemDtoInType = shape({
+  id: id().isRequired(),
+  name: string().isRequired(),
+});

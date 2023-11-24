@@ -11,8 +11,8 @@ class ShoppingListMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async list(awid) {
-    let filter = { awid };
+  async list(awid, state) {
+    let filter = { awid, state };
     return await super.find(filter);
   }
 
@@ -43,6 +43,10 @@ class ShoppingListMongo extends UuObjectDao {
 
   async delete(awid, id) {
     return await super.deleteOne({ id, awid });
+  }
+
+  async addItem(uuObject) {
+    return await super.insertOne({ uuObject });
   }
 }
 

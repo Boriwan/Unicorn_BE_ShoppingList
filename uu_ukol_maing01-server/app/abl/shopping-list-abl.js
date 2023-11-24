@@ -31,7 +31,9 @@ class ShoppingListAbl {
 
     let profiles = authorizationResult.getAuthorizedProfiles();
 
-    let shoppingLists = await this.dao.list(awid);
+    let state = ShoppingListStates.ACTIVE;
+
+    let shoppingLists = await this.dao.list(awid, state);
 
     return {
       profiles,
@@ -228,6 +230,43 @@ class ShoppingListAbl {
     const successMessage = "Successfully deleted shopping list " + shoppingList.id;
 
     return { successMessage, uuAppErrorMap };
+  }
+
+  async shoppingListAddItem(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListAddItemDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    let shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    // let newItem = dtoIn.name;
+    // await this.dao.addItem(newItem);
+    // let currentList = [];
+    // currentList = shoppingList.items;
+    // console.log(currentList);
+    // currentList += newItem;
+
+    shoppingList.items = currentList;
+
+    await this.dao.update(shoppingList);
+    const successMessage = "Successfully added new item " + newItem.name + " to the shopping list " + shoppingList.id;
+
+    return { successMessage, ...shoppingList, uuAppErrorMap };
   }
 }
 
