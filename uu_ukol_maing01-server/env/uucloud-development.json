@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "schemaSpecificationUri": "https://uuapp.plus4u.net/uu-bookkit-maing01/bef682626ed943f28cde360ccb325981/book/page?code=uuSubAppInstanceDescriptor",
+  "uuSubApp": {
+    "code": "UU.UKOL.MAING01",
+    "version": "0.1.0",
+    "name": "uuUkolMaing01",
+    "description": "",
+    "license": "License Commercial",
+    "asidRequired": true,
+    "awidCount": 1,
+    "resourcePoolUri": "----- VALUE REQUIRED -----",
+    "uuAppNodeSetMap": {
+      "CMD": {
+        "nodeSize": "G1_S",
+        "nodeCount": {
+          "min": 1,
+          "max": 1
+        },
+        "appPackUri": null,
+        "runtimeStack": "UU.APPG01/APPSERVER_NODEJS_STACK-2.1"
+      }
+    },
+    "uuAppObjectStoreMap": {
+      "OSID_1": {
+        "technology": "MongoDB-5.0",
+        "size": 0.25,
+        "backup": false,
+        "alias": "primary"
+      }
+    },
+    "uuConfigMap": {
+      "uu_app_secretstore_enable_encryption": true,
+      "uu_app_secretstore_master_key_active_slot": "slot1",
+      "uu_app_secretstore_master_key1_slot1": "oiwY|}v4DC]O+khUI^pv&n%EaV~Z3g)NlMV7ABVVyM(4;#$<hh1X%|AWSA3;x=Z{",
+      "asid_license_owner_list": ["0-0"],
+      "uu_app_oidc_providers_oidcg02_uri": "https://uuapp-dev.plus4u.net/uu-oidc-maing02/eca71064ecce44b0a25ce940eb8f053d/oidc",
+      "uu5g05_libraryRegistryBaseUri": "https://uuapp-dev.plus4u.net/uu-applibraryregistry-maing01/000008ad5570455e83857a394f9a21c9",
+      "uu5g05_plus4UGoBaseUri": "https://uuapp-dev.plus4u.net/uu-plus4ugo-maing01/00000c3f57074bfcb759aba2d562e013",
+      "uu_plus4u5g02_identityManagementBaseUri": "https://uuapp-dev.plus4u.net/uu-identitymanagement-maing01/58ceb15c275c4b31bfe0fc9768aa6a9c",
+      "uu_plus4u5g02_commonServicesBaseUri": "https://uuapp-dev.plus4u.net/uu-commonservices-maing01/00000b33c474420aa887c972097b8024",
+      "uu_plus4u5g02_peopleBaseUri": "https://uuapp-dev.plus4u.net/uu-plus4upeople-maing01/0000004723544d1ab0b74000d9f7671c",
+      "uu_plus4u5g02_organizationBaseUri": "https://uuapp-dev.plus4u.net/uu-plus4uorganization-maing01/00000e17cfda49f49db73ed53ac8e4cf"
+    }
+  }
+}

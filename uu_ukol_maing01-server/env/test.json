@@ -1,0 +1,35 @@
+{
+  "asid_license_owner_list": ["3039-912-8064-0000"],
+  "asid": "11111111111111111111111111111111",
+  "sysUuAppWorkspace": {
+    "awid": "22222222222222222222222222222222",
+    "awidLicenseOwnerList": ["3039-912-8064-0000"]
+  },
+  "userMap": {
+    "AsidLicenseOwner": {
+      "accessCode1": "Y5&Cv$yt3rJx26u2P2&r03u9St@2!d5V",
+      "accessCode2": "6YNV1u5G290-J!%83708141q51_!763n",
+      "uuIdentity": "3039-912-8064-0000"
+    },
+    "AsidAuthorities": {
+      "accessCode1": "Y5&Cv$yt3rJx26u2P2&r03u9St@2!d5V",
+      "accessCode2": "6YNV1u5G290-J!%83708141q51_!763n",
+      "uuIdentity": "3039-912-8064-0000"
+    },
+    "AwidLicenseOwner": {
+      "accessCode1": "Y5&Cv$yt3rJx26u2P2&r03u9St@2!d5V",
+      "accessCode2": "6YNV1u5G290-J!%83708141q51_!763n",
+      "uuIdentity": "3039-912-8064-0000"
+    },
+    "Authorities": {
+      "accessCode1": "Y5&Cv$yt3rJx26u2P2&r03u9St@2!d5V",
+      "accessCode2": "6YNV1u5G290-J!%83708141q51_!763n",
+      "uuIdentity": "3039-912-8064-0000",
+      "profileList": ["Authorities"]
+    }
+  },
+  "log_level": "FATAL",
+  "uuapp.appserver.monitoring.accesslog.log_level": "OFF",
+  "uuapp.perflog.logger.log_level": "OFF",
+  "uu_app_oidc_providers_oidcg02_uri": "https://uuapp-dev.plus4u.net/uu-oidc-maing02/eca71064ecce44b0a25ce940eb8f053d/oidc"
+}

@@ -1,0 +1,16 @@
+{
+  "uuSubAppDataStore": {
+    "primary": {
+      "type": "uuAppObjectStore",
+      "realization": "MongoDB",
+      "schemaMap": {
+        "ukolMain": {
+          "realization": "dao/UkolMainMongo"
+        },
+        "shoppingList": {
+          "realization": "dao/ShoppingListMongo"
+        }
+      }
+    }
+  }
+}

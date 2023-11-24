@@ -1,0 +1,46 @@
+{
+  "{vendor}-{uuApp}-{uuSubApp}": {
+    "useCaseMap": {
+      "shoppingList/list": {
+        "realization": "api/controllers/ShoppingListController.shoppingListsList",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "shoppingList/get": {
+        "realization": "api/controllers/ShoppingListController.shoppingListGet",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "shoppingList/create": {
+        "realization": "api/controllers/ShoppingListController.shoppingListCreate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "sys/uuAppWorkspace/init": {
+        "realization": "api/controllers/UkolMainController.init",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "sys/uuAppWorkspace/load": {
+        "realization": "api/controllers/UkolMainController.load",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "sys/uuAppWorkspace/loadBasicData": {
+        "realization": "api/controllers/UkolMainController.loadBasicData",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      }
+    }
+  }
+}
