@@ -21,7 +21,7 @@ class ShoppingListController {
     );
   }
   shoppingListUpdate(ucEnv) {
-    return shoppingListAbl.shoppingListCreate(
+    return shoppingListAbl.shoppingListUpdate(
       ucEnv.getUri().getAwid(),
       ucEnv.getDtoIn(),
       ucEnv.getSession().getIdentity(),

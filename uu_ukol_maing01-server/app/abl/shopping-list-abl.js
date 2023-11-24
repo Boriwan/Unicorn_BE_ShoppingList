@@ -174,7 +174,7 @@ class ShoppingListAbl {
     await this.dao.toggleArchive(awid, dtoIn.id);
     const successMessage = "Successfully archived shopping list " + shoppingList.id;
 
-    return { successMessage, shoppingList, uuAppErrorMap };
+    return { successMessage, ...shoppingList, uuAppErrorMap };
   }
 
   async shoppingListDelete(awid, dtoIn, session, authorizationResult) {
