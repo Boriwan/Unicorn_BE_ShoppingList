@@ -42,6 +42,10 @@
         "sysStateList": ["active"],
         "profileList": ["Authorities", "Executives"]
       },
+      "shoppingList/removeItem": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "Executives"]
+      },
       "sys/uuAppWorkspace/init": {
         "sysStateList": ["created", "assigned"],
         "profileList": ["AwidLicenseOwner", "AwidInitiator"]

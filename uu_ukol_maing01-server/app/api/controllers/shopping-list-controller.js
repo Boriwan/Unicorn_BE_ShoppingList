@@ -69,6 +69,15 @@ class ShoppingListController {
       ucEnv.getAuthorizationResult()
     );
   }
+
+  shoppingListRemoveItem(ucEnv) {
+    return shoppingListAbl.shoppingListRemoveItem(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getSession().getIdentity(),
+      ucEnv.getAuthorizationResult()
+    );
+  }
 }
 
 module.exports = new ShoppingListController();

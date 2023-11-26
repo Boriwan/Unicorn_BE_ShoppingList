@@ -33,3 +33,8 @@ const shoppingListCheckItemDtoInType = shape({
   id: id().isRequired(),
   name: string().isRequired(),
 });
+
+const shoppingListRemoveItemDtoInType = shape({
+  id: id().isRequired(),
+  name: string().isRequired(),
+});

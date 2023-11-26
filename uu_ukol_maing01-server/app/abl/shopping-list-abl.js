@@ -296,10 +296,10 @@ class ShoppingListAbl {
 
     let dtoInItemName = dtoIn.name;
 
-    const foundItem = shoppingList.items.find((item) => item.name === dtoInItemName);
+    const targetItem = shoppingList.items.find((item) => item.name === dtoInItemName);
 
-    if (foundItem) {
-      foundItem.isChecked = !foundItem.isChecked;
+    if (targetItem) {
+      targetItem.isChecked = !targetItem.isChecked;
     } else {
       throw new Errors.ShoppingList.ItemNotFound({ uuAppErrorMap }, { itemName: dtoInItemName });
     }
@@ -307,6 +307,44 @@ class ShoppingListAbl {
     await this.dao.update(shoppingList);
 
     const successMessage = `Successfully toggled isChecked state for item ${dtoInItemName} in shopping list ${shoppingList.id}`;
+
+    return { successMessage, ...shoppingList, uuAppErrorMap };
+  }
+
+  async shoppingListRemoveItem(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListRemoveItemDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    const shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    let dtoInItemName = dtoIn.name;
+
+    const targetItemIndex = shoppingList.items.findIndex((item) => item.name === dtoInItemName);
+
+    if (targetItemIndex !== -1) {
+      shoppingList.items.splice(targetItemIndex, 1);
+      await this.dao.update(shoppingList);
+    } else {
+      throw new Errors.ShoppingList.ItemNotFound({ uuAppErrorMap }, { itemName: dtoInItemName });
+    }
+
+    const successMessage = `Successfully deleted item ${dtoInItemName} in shopping list ${shoppingList.id}`;
 
     return { successMessage, ...shoppingList, uuAppErrorMap };
   }
