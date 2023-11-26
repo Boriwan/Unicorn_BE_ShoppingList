@@ -39,6 +39,13 @@ const ShoppingList = {
       this.message = "Update shopping list by ShoppingList Dao update failed.";
     }
   },
+  ItemNotFound: class extends ShoppingListUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ShoppingList.UC_CODE}itemNotFound`;
+      this.message = "Item not found or it don't exist in the shopping list";
+    }
+  },
 };
 
 module.exports = {

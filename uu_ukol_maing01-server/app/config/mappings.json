@@ -41,6 +41,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "shoppingList/checkItem": {
+        "realization": "api/controllers/ShoppingListController.shoppingListCheckItem",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "sys/uuAppWorkspace/init": {
         "realization": "api/controllers/UkolMainController.init",
         "httpMethod": "POST",

@@ -28,3 +28,8 @@ const shoppingListAddItemDtoInType = shape({
   id: id().isRequired(),
   name: string().isRequired(),
 });
+
+const shoppingListCheckItemDtoInType = shape({
+  id: id().isRequired(),
+  name: string().isRequired(),
+});
