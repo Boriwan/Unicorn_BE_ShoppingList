@@ -254,12 +254,16 @@ class ShoppingListAbl {
       throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
     }
 
-    // let newItem = dtoIn.name;
-    // await this.dao.addItem(newItem);
-    // let currentList = [];
-    // currentList = shoppingList.items;
-    // console.log(currentList);
-    // currentList += newItem;
+    let newItem = { name: dtoIn.name, isChecked: false };
+
+    if (!shoppingList.items || !Array.isArray(shoppingList.items)) {
+      shoppingList.items = [];
+    }
+
+    let currentList = shoppingList.items;
+
+    console.log(currentList);
+    currentList.push(newItem);
 
     shoppingList.items = currentList;
 
