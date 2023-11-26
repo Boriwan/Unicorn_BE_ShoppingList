@@ -46,6 +46,13 @@ const ShoppingList = {
       this.message = "Item not found or it don't exist in the shopping list";
     }
   },
+  MemberNotFound: class extends ShoppingListUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ShoppingList.UC_CODE}memberNotFound`;
+      this.message = "Member not found or they don't exist in the shopping list";
+    }
+  },
 };
 
 module.exports = {

@@ -51,6 +51,16 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "shoppingList/addMember": {
+        "realization": "api/controllers/ShoppingListController.shoppingListAddMember",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "shoppingList/removeMember": {
+        "realization": "api/controllers/ShoppingListController.shoppingListRemoveMember",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "sys/uuAppWorkspace/init": {
         "realization": "api/controllers/UkolMainController.init",
         "httpMethod": "POST",

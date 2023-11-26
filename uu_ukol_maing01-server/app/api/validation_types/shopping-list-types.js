@@ -38,3 +38,14 @@ const shoppingListRemoveItemDtoInType = shape({
   id: id().isRequired(),
   name: string().isRequired(),
 });
+
+const shoppingListAddMemberDtoInType = shape({
+  id: id().isRequired(),
+  memberId: uuIdentity().isRequired(),
+  memberName: string().isRequired(),
+});
+
+const shoppingListRemoveMemberDtoInType = shape({
+  id: id().isRequired(),
+  memberId: uuIdentity().isRequired(),
+});

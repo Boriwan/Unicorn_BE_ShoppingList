@@ -344,7 +344,87 @@ class ShoppingListAbl {
       throw new Errors.ShoppingList.ItemNotFound({ uuAppErrorMap }, { itemName: dtoInItemName });
     }
 
-    const successMessage = `Successfully deleted item ${dtoInItemName} in shopping list ${shoppingList.id}`;
+    const successMessage = `Successfully removed item ${dtoInItemName} in shopping list ${shoppingList.id}`;
+
+    return { successMessage, ...shoppingList, uuAppErrorMap };
+  }
+
+  async shoppingListAddMember(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListAddMemberDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    let shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    let newMember = { id: dtoIn.memberId, name: dtoIn.memberName };
+
+    if (!shoppingList.members || !Array.isArray(shoppingList.members)) {
+      shoppingList.members = [];
+    }
+
+    let currentList = shoppingList.members;
+
+    console.log(currentList);
+    currentList.push(newMember);
+
+    shoppingList.members = currentList;
+
+    await this.dao.update(shoppingList);
+    const successMessage =
+      "Successfully added new member " + newMember.name + " to the shopping list " + shoppingList.id;
+
+    return { successMessage, ...shoppingList, uuAppErrorMap };
+  }
+
+  async shoppingListRemoveMember(awid, dtoIn, session, authorizationResult) {
+    // HDS 1
+    let validationResult = this.validator.validate("shoppingListRemoveMemberDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.shoppingListUnsupportedKeys.code,
+      Errors.ShoppingList.InvalidDtoIn
+    );
+
+    const shoppingList = await this.dao.get(awid, dtoIn.id);
+    if (!shoppingList) {
+      throw new Errors.ShoppingList.ShoppingListDoesNotExist({ uuAppErrorMap }, { shoppingListId: dtoIn.id });
+    }
+
+    const uuIdentity = session.getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== shoppingList.uuIdentity && !isAuthorities) {
+      throw new Errors.ShoppingList.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    let dtoInMember = dtoIn.memberId;
+
+    const targetMemberIndex = shoppingList.members.findIndex((member) => member.id === dtoInMember);
+
+    if (targetMemberIndex !== -1) {
+      shoppingList.members.splice(targetMemberIndex, 1);
+      await this.dao.update(shoppingList);
+    } else {
+      throw new Errors.ShoppingList.MemberNotFound({ uuAppErrorMap }, { memberId: dtoInMember });
+    }
+
+    const successMessage = `Successfully removed member ${dtoInMember} in shopping list ${shoppingList.id}`;
 
     return { successMessage, ...shoppingList, uuAppErrorMap };
   }
