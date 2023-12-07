@@ -11,7 +11,7 @@ afterAll(async () => {
   await TestHelper.teardown();
 });
 
-describe("Testing the load uuCmd...", () => {
+describe("Testing the list uuCmd...", () => {
   test("HDS", async () => {
     let session = await TestHelper.login("AwidLicenseOwner", false, false);
 
