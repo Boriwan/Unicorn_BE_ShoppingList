@@ -16,7 +16,7 @@ describe("Testing the create uuCmd...", () => {
     let session = await TestHelper.login("AwidLicenseOwner", false, false);
 
     let dtoIn = {
-      name: "My archived shopping list",
+      name: "My test shopping list",
       items: [
         { name: "orange", isChecked: false },
         { name: "strawberry", isChecked: false },

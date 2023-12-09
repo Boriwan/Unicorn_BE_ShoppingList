@@ -11,7 +11,7 @@ beforeEach(async () => {
   let session = await TestHelper.login("AwidLicenseOwner", false, false);
 
   let createDtoIn = {
-    name: "My shopping list",
+    name: "My test shopping list",
     items: [
       {
         name: "apple",
