@@ -7,6 +7,39 @@ beforeAll(async () => {
   await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: "urn:uu:GGALL" });
 });
 
+beforeEach(async () => {
+  let session = await TestHelper.login("AwidLicenseOwner", false, false);
+
+  let createDtoIn = {
+    name: "My shopping list",
+    items: [
+      {
+        name: "apple",
+        isChecked: "false",
+      },
+      {
+        name: "banana",
+        isChecked: "false",
+      },
+      {
+        name: "milk",
+        isChecked: "false",
+      },
+    ],
+    awid: "22222222222222222222222222222222",
+    owner: "822-5205-4105-0000",
+    state: "active",
+    members: [],
+    sys: {
+      cts: "2023-11-26T11:10:02.001Z",
+      mts: "2023-11-26T11:10:02.001Z",
+      rev: 0,
+    },
+  };
+  let createResult = await TestHelper.executePostCommand("shoppingList/create", createDtoIn, session);
+  createdShoppingListId = createResult.data.id;
+});
+
 afterAll(async () => {
   await TestHelper.teardown();
 });
@@ -15,36 +48,7 @@ describe("Testing the get uuCmd...", () => {
   test("HDS", async () => {
     let session = await TestHelper.login("AwidLicenseOwner", false, false);
 
-    let createDtoIn = {
-      name: "My archived shopping list",
-      items: [
-        {
-          name: "orange",
-          isChecked: "false",
-        },
-        {
-          name: "strawberry",
-          isChecked: "false",
-        },
-        {
-          name: "corn",
-          isChecked: "false",
-        },
-      ],
-      awid: "22222222222222222222222222222222",
-      owner: "822-5205-4105-0000",
-      state: "active",
-      members: [],
-      sys: {
-        cts: "2023-11-26T11:10:02.001Z",
-        mts: "2023-11-26T11:10:02.001Z",
-        rev: 0,
-      },
-      id: "6563278a243e49266af0f1de",
-    };
-     await TestHelper.executePostCommand("shoppingList/create", createDtoIn, session);
-
-    let dtoIn = { id: createDtoIn.id };
+    let dtoIn = { id: createdShoppingListId };
     let result = await TestHelper.executeGetCommand("shoppingList/get", dtoIn, session);
 
     expect(result.status).toEqual(200);
@@ -54,7 +58,7 @@ describe("Testing the get uuCmd...", () => {
   test("ALTS - list does not exist", async () => {
     let session = await TestHelper.login("AwidLicenseOwner", false, false);
 
-    let dtoIn = { id: "65632700243e49266af0f1d3" };
+    let dtoIn = { id: createdShoppingListId };
     let result = await TestHelper.executeGetCommand("shoppingList/get", dtoIn, session);
 
     // expect(result.status).toEqual(400);
